@@ -1,17 +1,25 @@
-#include <iostream>
+#include <bits/stdc++.h>
 using namespace std;
 
-int main() {
-    int n;
-    int best = -100000;
-    int curr = 0;
-    cin >> n;
-    for (int i = 0; i < n; i++ ){
-        int curr_cost;
-        cin >> curr_cost;
-        curr += curr_cost;
-        if (curr < curr_cost) curr = curr_cost;
+long long kadane(vector<long long>& nums) {
+    long long curr = nums[0];
+    long long best = nums[0];
+    for (long long i = 1; i < nums.size(); i++) {
+        curr = max(nums[i], curr + nums[i]);
         best = max(best, curr);
     }
-    cout << best << endl;
+    return max(0LL, best);
+}
+
+int main() {
+    long long n;
+    cin >> n;
+    vector<long long> v;
+    for (long long i = 0; i < n; i++ ){
+        long long curr_cost;
+        cin >> curr_cost;
+        v.push_back(curr_cost);
+    }
+    long long ans = kadane(v);
+    cout << ans << endl;
 }
