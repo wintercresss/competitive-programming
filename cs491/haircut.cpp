@@ -4,45 +4,29 @@ using namespace std;
 
 typedef long long ll;
 
-//comapre with neighbors and join if they are all bigger than l
-// one counter for how many disjoint sets greater than l
-// in disjoint set, either all greater than l or none greater than l
-
-ll find(vector<ll>& parent, ll u) {
-    if (parent[u] == u) return u;
-    parent[u] = find(parent, parent[u]);
-    return parent[u];
-}
-
-bool union_(vector<ll>& parent, ll u, ll v) {
-    ll paru = parent[u];
-    ll parv = parent[v];
-    if (paru == parv) return false;
-
-    parent[u] = parent[v];
-    return true;
-}
-
 
 int main() {
-    int n, q, l;
+    ll n, q, l;
     cin >> n >> q >> l;
     vector<ll> vec;
 
-    for (int i = 0; i < n; i++) {
+    for (ll i = 0; i < n; i++) {
         ll strand;
         cin >> strand;
         vec.push_back(strand);
     }
 
-    //vector<ll> parent;
-    //for (int i = 0; i < vec.size(); i++) {
-    //    parent[i] = i;
-    //}
-
     ll cnt = 0;
+    if (vec[0] > l) {
+        cnt++;
+    }
+    for (ll i = 1; i < vec.size(); i++) {
+        if (vec[i] > l && vec[i-1] <= l) {
+            cnt++;
+        }
+    }
 
-    for (int i = 0; i < q; i++) {
+    for (ll i = 0; i < q; i++) {
         int type;
         cin >> type;
         if (type == 0) {
@@ -51,19 +35,30 @@ int main() {
             ll idx;
             ll amount;
             cin >> idx >> amount;
+            idx--;
             vec[idx] += amount;
+            if (vec.size() == 1 && vec[idx] > l && vec[idx] - amount <= l) cnt++;
 
-            if (vec[idx] > l) {
-                bool toinc = true;
-                if (idx-1 >= 0 && vec[idx-1] > l) {
-                    toinc = false;
+            if (vec.size() > 1 && vec[idx] > l && vec[idx] - amount <= l && idx > 0 && idx < vec.size()-1) {
+                if (vec[idx-1] > l && vec[idx+1] > l) {
+                    cnt--;
+                } else if (vec[idx-1] <= l && vec[idx+1] <= l) {
+                    cnt++;
                 }
-                if (idx+1 < vec.size() && vec[idx+1] > l) {
-                    toinc = false;
+            } else if (vec.size() > 1 && vec[idx] > l && vec[idx] - amount <= l && idx == 0) {
+                if (vec[idx+1] <= l) {
+                    cnt++;
                 }
-                if (toinc) cnt++;
-
+            } else if (vec.size() > 1 && vec[idx] > l && vec[idx] - amount <= l && idx == vec.size()-1) {
+                if (vec[idx-1] <= l) {
+                    cnt++;
+                }
             }
+
+            // for (int i = 0; i < vec.size(); i++) {
+            //     std::cout << vec[i] << " ";
+            // }
+            // std::cout << std::endl;
 
         }
     }
