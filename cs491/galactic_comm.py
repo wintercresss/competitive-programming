@@ -21,4 +21,4 @@ for _ in range(k):
             grid[j][i] = grid[i][j]
             total += grid[i][j]
     
-    print(total, end=" ")
+    print(total)
