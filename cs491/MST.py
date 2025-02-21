@@ -21,7 +21,6 @@ def find_mst(d, startnode, n):
         for nextnode, cost in d[currnode]:
             heapq.heappush(heap, (cost, nextnode, currnode))
 
-    res.sort(key=lambda x:x[1])
     return res, total
 
 
@@ -37,4 +36,3 @@ answer, totalcost = find_mst(d, 0, n)
 print(totalcost)
 for u, v in answer:
     print(str(u) + " " + str(v))
-
