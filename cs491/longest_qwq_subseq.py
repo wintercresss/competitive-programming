@@ -26,15 +26,11 @@ map = dict()
 for idx, i in enumerate(Ql):
     map[i] = idx
 
-arr1 = [i for i in range(len(Ql))]
 arr2 = []
 for i in Qr:
     if i in map:
         arr2.append(map[i])
-    else:
-        arr2.append(float('-inf'))
 
-#print(arr1)
 #print(arr2)
 
 def LIS(nums):
