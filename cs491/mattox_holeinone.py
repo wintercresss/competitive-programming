@@ -21,32 +21,24 @@ for _ in range(m3):
     v3.append(b)
 
 
-dp = dict()
-
-def solvefirst(remain, i, cost, val, maxidx):
-    print(remain, i, "REMAIN I")
-    if remain < 0:
-        return float('-inf')
-
-    if i >= maxidx:
-        return 0
+def knapsack(W, val, wt): # val = v, wt = c
+    dp = [0 for _ in range(W+1)]
     
-    if (remain, i) in dp:
-        return dp[remain][i]
-    
-    skip = solvefirst(remain, i+1, cost, val, maxidx)
-    take = val[i] + solvefirst(remain - cost[i], i+1, cost, val, maxidx)
-    dp[(remain, i)] = max(take, skip)
-    return max(take, skip)
+    for i in range(len(val)):
+        for j in range(W+1 - wt[i]):
+            dp[j] = max(dp[j], val[i] + dp[j + wt[i]])
 
-solvefirst(n, 0, c1, v1, m1)
-print(dp)
+    return dp
 
+first = knapsack(n, v1, c1)
+second = knapsack(n, v2, c2)
+third = knapsack(n, v3, c3)
+best = 0
 
-# def solvesecond(remain, j):
-#     if j >= m2:
-#         return solvethird(remain, 0)
+for i in range(1, n+1):
+    for j in range(1, n - i):
+        k = n - i - j
+        test = first[n-i] * second[n-j] * third[n-k]
+        best = max(best, test)
 
-# def solvethird(remain, k):
-#     if j >= m3:
-#         return 1
+print(best)
