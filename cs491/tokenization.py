@@ -1,4 +1,5 @@
-
+import sys
+sys.setrecursionlimit(10**5)
 d = set()
 n, m = map(int, input().split())
 for _ in range(m):
